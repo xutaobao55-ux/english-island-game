@@ -668,7 +668,7 @@ function v57RoleOptions(w){
 function v57DateKey(ts){const d=new Date(ts);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function v57WeekStart(){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-((d.getDay()+6)%7));return v57DateKey(d.getTime())}
 function v57WeekEnd(){const d=new Date(v57WeekStart()+'T00:00:00');d.setDate(d.getDate()+6);return v57DateKey(d.getTime())}
-function v57WeekWords(){const a=v57WeekStart(),b=v57WeekEnd();return VX_WORDS.filter(w=>{const t=Number(vxData.records[w.id]?.passedAt||0);if(!t)return false;const k=v57DateKey(t);return k>=a&&k<=b})}
+function v57WeekWords(){const a=v57WeekStart(),b=v57WeekEnd(),seen=new Set(),out=[];VX_WORDS.forEach(w=>{const t=Number(vxData.records[w.id]?.passedAt||0),word=w.w.toLowerCase();if(!t||seen.has(word))return;const k=v57DateKey(t);if(k>=a&&k<=b){seen.add(word);out.push(w)}});return out}
 function v57WeeklySummary(){
  const passed=v57WeekWords(),count=passed.length,pct=Math.min(100,Math.round(count/V57_GOAL*100)),left=Math.max(0,V57_GOAL-count);
  const labels=passed.slice(0,50).map(w=>'<span>'+esc(w.w)+'</span>').join('');
