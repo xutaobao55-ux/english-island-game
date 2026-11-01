@@ -548,4 +548,244 @@ document.title='英语岛大冒险 V5.6 · 完整在线修复版';const qLogo=do
   document.title='英语岛大冒险 V5.6 · 完整在线修复版';
 })();
 </script>
+<style id="v57-guided-vocabulary-style">
+.v57-weekly{margin:14px 0 18px;padding:18px 20px;border:2px solid #b9dfcb;border-radius:22px;background:linear-gradient(125deg,#f0fff4,#eef8ff 60%,#fff8e5);box-shadow:0 8px 22px #285d4c12}
+.v57-weekly-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.v57-weekly h2{font-size:clamp(20px,2.7vw,27px);color:#225847;margin:0}
+.v57-count{font-size:clamp(25px,4vw,38px);font-weight:1000;color:#20876d}
+.v57-track{height:15px;border-radius:99px;background:#dfece5;overflow:hidden;margin:12px 0}
+.v57-track i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#50bd8a,#3c91ce)}
+.v57-plan{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}
+.v57-plan span{background:#fff;border:1px solid #d4e7dc;border-radius:99px;padding:7px 10px;font-size:12px;font-weight:800;color:#486b63}
+.v57-word-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:11px}
+.v57-word-chips span{background:#fff;border:1px solid #cde4d9;border-radius:9px;padding:5px 8px;font-size:12px;color:#35675a}
+.v57-guide{margin:13px 0;padding:14px;border:1px solid #d0e5dc;border-radius:16px;background:#f5fcf8;line-height:1.7}
+.v57-guide strong{color:#226d5d}
+.v57-relation{margin:13px 0;padding:15px;border:2px solid #d6e7ef;border-radius:17px;background:linear-gradient(130deg,#f3fbff,#f7fff7)}
+.v57-relation .v57-tag{display:inline-block;padding:5px 9px;background:#e0f1ff;border-radius:99px;font-size:12px;font-weight:900;color:#2e6c8d}
+.v57-relation h3{margin:8px 0;font-size:19px}
+.v57-relation p{margin:5px 0;color:#56717a;line-height:1.65}
+.v57-role-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:12px 0}
+.v57-role-choice{min-height:88px;border:2px solid #d1e3df;border-radius:15px;background:white;padding:11px;text-align:left;color:#2e5962;font-weight:850}
+.v57-role-choice:hover{border-color:#6cae9a;background:#f1fff7}
+.v57-role-choice .icon{display:block;font-size:24px;margin-bottom:5px}
+.v57-sentence{padding:13px 15px;background:#eef8ff;border:1px solid #cfe4f1;border-radius:15px;font-size:18px;line-height:1.8;margin:10px 0}
+.v57-sentence mark{background:#ffe49c;border-radius:5px;padding:1px 4px;color:#684b16;font-weight:900}
+.v57-hidden{padding:14px;border:2px dashed #b7d3c6;border-radius:15px;background:#f7fff7;text-align:center;font-weight:850;color:#3b7160;margin:10px 0}
+.v57-library-note{display:block;color:#628078;font-size:12px;line-height:1.5;margin-top:4px}
+@media(max-width:650px){.v57-weekly{padding:14px}.v57-role-grid{grid-template-columns:1fr}.v57-role-choice{min-height:62px;display:flex;align-items:center;gap:10px}.v57-role-choice .icon{margin:0}.v57-count{font-size:27px}}
+</style>
+<script id="v57-guided-vocabulary">
+(()=>{
+'use strict';
+const V57_GOAL=50,V57_DAILY_NEW=10,V57_DAILY_REVIEW=5;
+const V57_GROUPS=[
+ {name:'心情和感觉',words:'happy sad angry tired hungry thirsty fine'},
+ {name:'颜色',words:'red blue green yellow white black pink brown purple orange'},
+ {name:'大小、长短和速度',words:'big small fast slow long short tall strong weak'},
+ {name:'天气',words:'sunny rainy windy cloudy snowy hot cold warm rain snow sun'},
+ {name:'动物',words:'rabbit lion tiger dinosaur elephant panda bear cat dog bird mouse monkey butterfly fish wolf duck bee ant'},
+ {name:'食物和饮料',words:'cake milk juice rice bread fish chicken carrot tomato grape potato apple orange banana jam water peach egg'},
+ {name:'家庭成员',words:'father mother brother sister grandfather grandmother family uncle aunt cousin'},
+ {name:'学校和学习',words:'teacher student school classroom book bag paper pen pencil ruler library hall blackboard desk chair picture story'},
+ {name:'身体',words:'hair eye eyes ear ears nose mouth hand leg legs foot feet tail head wing'},
+ {name:'地点',words:'home room library toilet shop supermarket park zoo school hall classroom garden farm'},
+ {name:'时间',words:'morning afternoon evening night today tomorrow yesterday monday tuesday wednesday thursday friday saturday sunday'},
+ {name:'动作',words:'run swim jump fly dance sing read write draw play eat drink listen look count ride open close help make go come'},
+ {name:'位置和方向',words:'under in on behind beside near between above below inside outside'}
+];
+const V57_OPPOSITES={happy:'sad',sad:'happy',big:'small',small:'big',fast:'slow',slow:'fast',long:'short',short:'long',tall:'short',hot:'cold',cold:'hot',warm:'cold',strong:'weak',weak:'strong',clean:'dirty',dirty:'clean',early:'late',late:'early',open:'close',close:'open',light:'heavy',heavy:'light',up:'down',down:'up',before:'after',after:'before',in:'out',out:'in',day:'night',night:'day',old:'young',young:'old'};
+const V57_FAMILIES=[['slow','slowly'],['quick','quickly'],['play','playing'],['read','reading'],['write','writing'],['run','running'],['swim','swimming'],['like','likes'],['have','has'],['fly','flies'],['baby','babies'],['box','boxes'],['leaf','leaves'],['knife','knives']];
+const V57_COLLOCATIONS={read:'book',write:'paper',drink:'water',eat:'bread',fly:'kite',ride:'bicycle',open:'door',close:'window',play:'football',make:'cake',listen:'music',look:'picture',go:'school',under:'table',birthday:'cake',hungry:'bread',thirsty:'water',rainy:'umbrella',sunny:'sun',cold:'coat'};
+const V57_ROLE_MAP={
+ name:{id:'name',label:'名字牌',icon:'🏷️',desc:'给人物、动物、地点或东西起名字。',example:'a rabbit · a book · my teacher'},
+ action:{id:'action',label:'动作牌',icon:'🏃',desc:'告诉我们做什么，或处于什么状态。',example:'run · read · play'},
+ describe:{id:'describe',label:'样子／感觉牌',icon:'🎨',desc:'告诉我们人或东西是什么样、有什么感觉。',example:'a red bag · a happy girl'},
+ extra:{id:'extra',label:'补充信息牌',icon:'⏰',desc:'补充说明动作怎样、什么时候或到什么程度。',example:'today · slowly'},
+ place:{id:'place',label:'位置关系牌',icon:'📍',desc:'告诉我们人或东西在哪里，或时间、方向有什么关系。',example:'under the table · in the room'},
+ connect:{id:'connect',label:'连接牌',icon:'🔗',desc:'把两个词、两个想法或句子连接起来。',example:'you and me · tea or juice'},
+ replace:{id:'replace',label:'名字替身牌',icon:'👥',desc:'代替已经说过的人或东西的名字，避免重复。',example:'Tom is kind. He is my friend.'},
+ belong:{id:'belong',label:'所属关系牌',icon:'🔐',desc:'告诉我们东西属于谁。',example:'my book · her bag · their classroom'},
+ ask:{id:'ask',label:'提问牌',icon:'❓',desc:'帮助我们提出问题，询问人物、事物、地点或情况。',example:'Who is he? · Where is my bag?'}
+};
+const V57_WORD_ROLE={am:'action',is:'action',are:'action',be:'action',was:'action',were:'action',do:'action',does:'action',did:'action',can:'action',cannot:'action',i:'replace',you:'replace',he:'replace',she:'replace',it:'replace',we:'replace',they:'replace',me:'replace',him:'replace',them:'replace',us:'replace',my:'belong',our:'belong',your:'belong',his:'belong',her:'belong',its:'belong',their:'belong',and:'connect',but:'connect',or:'connect',because:'connect',although:'connect',unless:'connect',in:'place',on:'place',under:'place',at:'place',to:'place',with:'place',of:'place',from:'place',behind:'place',beside:'place',between:'place',near:'place',before:'place',after:'place',today:'extra',tomorrow:'extra',yesterday:'extra',here:'extra',there:'extra',quickly:'extra',slowly:'extra',probably:'extra',however:'extra',therefore:'extra',finally:'extra',especially:'extra',instead:'extra',who:'ask',what:'ask',where:'ask',how:'ask'};
+const V57_VERBS=new Set('meet read write draw run swim count fly dance like have look listen sing open close eat drink help want need play see put take go come jump skip ride feel make say show ask answer turn wash brush walk talk visit study'.split(' '));
+const V57_ADJECTIVES=new Set('fine tall lovely soft old long short black big small red green happy cute sad angry tired hungry thirsty beautiful interesting different important brave curious strong weak fast slow clean quiet warm cold hot rainy sunny windy cloudy snowy yellow white blue pink brown purple orange new good bad nice young heavy light'.split(' '));
+const V57_PRONOUNS=new Set('i you he she it we they me him her them us this that these those'.split(' '));
+const V57_PREPOSITIONS=new Set('under in on at to with of from behind beside between near before after above below inside outside'.split(' '));
+const V57_CONJUNCTIONS=new Set('and but or because although unless'.split(' '));
+const V57_ADVERBS=new Set('today tomorrow yesterday here there now then always never quickly slowly probably however therefore finally especially instead'.split(' '));
+function v57RoleKey(w){
+ const k=w.w.toLowerCase();
+ if(V57_WORD_ROLE[k])return V57_WORD_ROLE[k];
+ if(V57_PRONOUNS.has(k)||w.pos==='pron.')return 'replace';
+ if(V57_CONJUNCTIONS.has(k)||w.pos==='conj.')return 'connect';
+ if(V57_PREPOSITIONS.has(k)||w.pos==='prep.')return 'place';
+ if(V57_ADVERBS.has(k)||w.pos==='adv.')return 'extra';
+ if(V57_ADJECTIVES.has(k)||w.pos==='adj.')return 'describe';
+ if(V57_VERBS.has(k)||w.pos==='v.')return 'action';
+ return 'name';
+}
+function v57Role(w){return V57_ROLE_MAP[v57RoleKey(w)]||V57_ROLE_MAP.name}
+function v57HasWord(word){return VX_WORDS.some(x=>x.w.toLowerCase()===String(word).toLowerCase())}
+function v57Hash(s){return Array.from(String(s)).reduce((n,c)=>n+c.charCodeAt(0),0)}
+function v57Relation(w){
+ const key=w.w.toLowerCase();
+ for(const pair of V57_FAMILIES){if(pair.includes(key)){const other=pair[0]===key?pair[1]:pair[0];if(v57HasWord(other))return {kind:'同一家族',answer:other,clue:'看看词形有没有共同的部分。',explain:pair[0]+' 和 '+pair[1]+' 像一家人：它们有共同的词形线索，可以放在一起记。'};}}
+ const opposite=V57_OPPOSITES[key];if(opposite&&v57HasWord(opposite))return {kind:'意思相反',answer:opposite,clue:'先想一想这个词的反面是什么。',explain:w.w+' 表示“'+w.cn+'”，'+opposite+' 表示相反的意思。把一对反义词放在一起记更牢。'};
+ const coll=V57_COLLOCATIONS[key];if(coll&&(v57HasWord(coll)||String(w.example).toLowerCase().includes(coll)))return {kind:'常见搭配',answer:coll,clue:'想一想这个词常和什么东西一起出现。',explain:w.w+' 常和 '+coll+' 一起使用。把两个词放进同一个小场景里记忆。'};
+ const group=V57_GROUPS.find(g=>g.words.split(' ').includes(key)&&g.words.split(' ').some(x=>x!==key&&v57HasWord(x)));
+ if(group){const pool=group.words.split(' ').filter(x=>x!==key&&v57HasWord(x));const answer=pool[v57Hash(w.id)%pool.length];return {kind:'同一主题',answer,clue:'主题提示：'+group.name+'。想一想还有哪个词也属于这个主题？',explain:w.w+' 和 '+answer+' 都属于“'+group.name+'”，可以用主题分类的方法一起记。'};}
+ const stops=new Set('i am is are the a an my your his her its our their we they you he she it can will to in on at of and or this that what where who how'.split(' '));
+ const tokens=(w.example.match(/[A-Za-z]+/g)||[]).map(x=>x.toLowerCase()).filter(x=>x!==key&&!stops.has(x));
+ const partner=tokens.find(x=>v57HasWord(x))||tokens[0];
+ if(partner)return {kind:'句子搭档',answer:partner,clue:'从例句中找一个和它一起出现的词。',explain:'在例句里，'+w.w+' 和 '+partner+' 一起组成一个完整意思。读整句话，比孤立背单词更容易建立联系。'};
+ const fallback=VX_WORDS.find(x=>x.id!==w.id&&x.tier===w.tier);
+ return {kind:'同级词汇伙伴',answer:fallback?fallback.w:'word',clue:'把它放回自己的学习主题和例句中。',explain:'先记住 '+w.w+' 的意思，再把它放进例句中理解；遇到同主题的词时一起复习。'};
+}
+function v57RelationOptions(w,info){
+ const answer=info.answer;
+ const candidates=VX_WORDS.filter(x=>x.id!==w.id&&x.w.toLowerCase()!==answer.toLowerCase()).map(x=>x.w);
+ const unique=Array.from(new Set(candidates));let distractors=[];
+ for(let i=0;i<unique.length&&distractors.length<2;i++){const x=unique[(v57Hash(w.id)+i*19)%unique.length];if(x.toLowerCase()!==w.w.toLowerCase()&&!distractors.some(y=>y.toLowerCase()===x.toLowerCase()))distractors.push(x);}
+ const arr=[answer,...distractors];return arr.sort((a,b)=>v57Hash(a+w.id)-v57Hash(b+w.id));
+}
+function v57RoleOptions(w){
+ const right=v57Role(w),other={name:['action','describe'],action:['name','describe'],describe:['name','action'],extra:['action','place'],place:['name','connect'],connect:['action','place'],replace:['name','action'],belong:['name','replace'],ask:['connect','place']};
+ return [right,...(other[right.id]||['name','action']).map(k=>V57_ROLE_MAP[k])].sort((a,b)=>v57Hash(a.id+w.id)-v57Hash(b.id+w.id));
+}
+function v57DateKey(ts){const d=new Date(ts);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function v57WeekStart(){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-((d.getDay()+6)%7));return v57DateKey(d.getTime())}
+function v57WeekEnd(){const d=new Date(v57WeekStart()+'T00:00:00');d.setDate(d.getDate()+6);return v57DateKey(d.getTime())}
+function v57WeekWords(){const a=v57WeekStart(),b=v57WeekEnd();return VX_WORDS.filter(w=>{const t=Number(vxData.records[w.id]?.passedAt||0);if(!t)return false;const k=v57DateKey(t);return k>=a&&k<=b})}
+function v57WeeklySummary(){
+ const passed=v57WeekWords(),count=passed.length,pct=Math.min(100,Math.round(count/V57_GOAL*100)),left=Math.max(0,V57_GOAL-count);
+ const labels=passed.slice(0,50).map(w=>'<span>'+esc(w.w)+'</span>').join('');
+ return '<section class="v57-weekly"><div class="v57-weekly-head"><div><span class="vx-kicker">🏆 本周词汇挑战 · '+v57WeekStart()+' 至 '+v57WeekEnd()+'</span><h2>每周过关目标：50个不同单词</h2></div><div class="v57-count">'+count+' / 50</div></div><div class="v57-track" role="progressbar" aria-valuenow="'+Math.min(50,count)+'" aria-valuemin="0" aria-valuemax="50"><i style="width:'+pct+'%"></i></div><p>'+(count>=50?'🎉 本周目标已达成！继续复习，保持记忆。':'本周已过关 '+count+' 个，还差 '+left+' 个。每个单词只按首次真正过关计数，不靠重复刷同一个词凑数。')+'</p><div class="v57-plan"><span>周一至周五：每天10个新词</span><span>每天最多5个到期复习</span><span>周末：复习、补漏和巩固</span></div>'+(labels?'<div class="v57-word-chips">'+labels+'</div>':'<p class="v57-library-note">完成一个单词的四步学习后，它会出现在本周过关清单。</p>')+'</section>';
+}
+function v57Highlight(sentence,word){
+ const text=String(sentence),at=text.toLowerCase().indexOf(String(word).toLowerCase());
+ if(at<0)return esc(text);
+ return esc(text.slice(0,at))+'<mark>'+esc(text.slice(at,at+word.length))+'</mark>'+esc(text.slice(at+word.length));
+}
+function v57MeaningChoices(w){
+ const pool=VX_WORDS.filter(x=>x.id!==w.id&&x.cn!==w.cn&&x.tier===w.tier).map(x=>x.cn);
+ const unique=Array.from(new Set(pool));let picks=[];
+ for(let i=0;i<unique.length&&picks.length<2;i++){const x=unique[(v57Hash(w.id)+i*11)%unique.length];if(!picks.includes(x))picks.push(x)}
+ if(picks.length<2){for(const x of Array.from(new Set(VX_WORDS.filter(x=>x.id!==w.id&&x.cn!==w.cn).map(x=>x.cn)))){if(!picks.includes(x))picks.push(x);if(picks.length===2)break}}
+ return [w.cn,...picks].sort((a,b)=>v57Hash(a+w.id)-v57Hash(b+w.id));
+}
+vxStageName=function(i){return ['① 听音猜意思','② 找词语伙伴','③ 看句子里的工作','④ 藏起单词再拼写'][i]||'词汇挑战'};
+vxChoices=function(w,kind){if(kind==='meaning')return v57MeaningChoices(w);return []};
+vxWordDisplay=function(w,hide){
+ if(hide)return '<div class="v57-hidden">🕵️ 单词藏起来了！先根据中文和句子线索回忆。</div><div class="vx-word-tools"><button class="btn blue" data-vx="speak" data-text="'+attr(w.w)+'">🔊 听发音</button><button class="btn" data-vx="slow" data-text="'+attr(w.w)+'">🐢 慢速</button></div>';
+ return '<div class="vx-word">'+esc(w.w)+'</div><div class="vx-word-tools"><button class="btn blue" data-vx="speak" data-text="'+attr(w.w)+'">🔊 听发音</button><button class="btn" data-vx="slow" data-text="'+attr(w.w)+'">🐢 慢速</button><span class="badge">'+esc(w.tier)+' · 先理解，再记忆</span></div>';
+};
+vxMark=function(answer){
+ if(!vxRun||vxRun.response)return;
+ const w=vxItem(),phase=vxStep();let correct=false,expected='',explain='';
+ if(phase===0){correct=answer===w.cn;expected=w.cn;explain='先把声音和意思连起来：'+w.w+' 表示“'+w.cn+'”。多听几次，再试着不看中文说出英文。';}
+ else if(phase===1){const rel=v57Relation(w);correct=String(answer).toLowerCase()===String(rel.answer).toLowerCase();expected=rel.answer;explain=rel.explain;}
+ else if(phase===2){const role=v57Role(w);correct=answer===role.id;expected=role.label;explain=role.desc+' 例子：'+role.example+'。先记住它在句子里的工作，不需要现在背语法名称。';}
+ else{correct=normalize(answer)===normalize(w.w);expected=w.w;explain='正确拼写是 '+w.w+'。放回句子读一遍：'+w.example;}
+ if(!correct)vxRun.mistake=true;
+ vxRun.response={correct,expected,explain,phase};vxSave();render();
+};
+vxStudyPage=function(){
+ const w=vxItem();if(!w)return vxMinePage();
+ const phase=vxStep(),resp=vxRun.response;
+ let html='<button class="btn soft" data-vx="exit">← 返回单词矿洞（保留进度）</button><div class="section"><h2>⛏️ 本周50词 · '+(vxRun.kind==='review'?'到期复习':'新词过关')+'</h2><span class="badge">'+(vxRun.i+1)+' / '+vxRun.ids.length+'</span></div><div class="vx-vocab vx-card"><div class="row"><b class="small-label">'+vxStageName(phase)+'</b><span class="sub">'+esc(w.tier)+' · 第'+(phase+1)+'步／共4步</span></div><div class="vx-step">'+[0,1,2,3].map(i=>'<span class="'+(i<=phase?'on':'')+'"></span>').join('')+'</div>';
+ if(phase===0){
+  html+=vxWordDisplay(w,false)+'<div class="v57-guide"><strong>第一步：先听、再想意思</strong><p>听一听单词，跟着读一遍。想想它可能出现在什么场景里，再选出意思。</p><p>记忆小窍门：声音 + 中文意思 + 一个画面，一起记。</p></div><div class="vx-prompt">“'+esc(w.w)+'” 表示什么意思？</div>'+vxChoiceButtons(vxChoices(w,'meaning'));
+ }else if(phase===1){
+  const rel=v57Relation(w);
+  html+=vxWordDisplay(w,false)+'<div class="v57-relation"><span class="v57-tag">第二步 · '+esc(rel.kind)+'</span><h3>给单词找一个伙伴</h3><p>'+esc(rel.clue)+'</p><p>词汇不是一个个孤零零地背。找出和它有联系的词，把它们连成一张小地图。</p></div><div class="vx-prompt">'+esc(rel.kind==='意思相反'?'哪个词和“'+w.w+'”的意思相反？':rel.kind==='同一家族'?'哪个词和“'+w.w+'”有共同的词形线索？':rel.kind==='常见搭配'?'哪个词常和“'+w.w+'”一起出现？':rel.kind==='同一主题'?'哪个词和“'+w.w+'”属于同一主题？':'从例句或词汇主题中，找出和“'+w.w+'”有关联的词。')+'</div>'+vxChoiceButtons(v57RelationOptions(w,rel));
+ }else if(phase===2){
+  const role=v57Role(w);
+  html+=vxWordDisplay(w,false)+'<div class="v57-guide"><strong>第三步：看看这个词在句子里做什么</strong><div class="v57-sentence">'+v57Highlight(w.example,w.w)+'</div><p>每个词在句子里都有自己的“工作”。先不用背“名词、动词、形容词”这些名称，先看它是在起名字、表示动作，还是描述样子和感觉。</p><button class="btn soft" data-vx="speak" data-text="'+attr(w.example)+'">🔊 听例句</button></div><div class="vx-prompt">“'+esc(w.w)+'” 在这句话里是哪一种工作？</div><div class="v57-role-grid">'+v57RoleOptions(w).map(r=>'<button class="v57-role-choice" data-vx="answer" data-val="'+r.id+'"><span class="icon">'+r.icon+'</span><span>'+esc(r.label)+'</span></button>').join('')+'</div>';
+ }else{
+  const sentence=vxContext(w);
+  html+=vxWordDisplay(w,true)+'<div class="v57-guide"><strong>第四步：遮住单词，自己回忆</strong><p>中文线索：<b>'+esc(w.cn)+'</b></p><p>例句线索：'+esc(sentence)+'</p><p>先听发音，再用下面的字母拼出单词。</p></div><div class="build-area">'+(vxRun.selected.length?vxRun.selected.map((id,j)=>'<button class="token answer" data-vx="remove" data-pos="'+j+'">'+esc(w.w.toLowerCase().replace(/[^a-z]/g,'')[id])+' ↶</button>').join(''):'点击下面的字母方块开始拼写')+'</div><div class="tokens">'+vxLetters(w).map(l=>'<button class="token" data-vx="letter" data-id="'+l.i+'" '+(vxRun.selected.includes(l.i)?'disabled':'')+'>'+esc(l.c)+'</button>').join('')+'</div><button class="btn" data-vx="reset">重新排列</button> <button class="btn primary" data-vx="spellcheck">检查拼写 ✓</button>';
+ }
+ if(resp){
+  html+='<div class="vx-response '+(resp.correct?'':'warn')+'"><b>'+(resp.correct?'✅ 这一步答对了！':'🔎 看提示，再把它记牢')+'</b><div>参考答案：<b>'+esc(resp.expected)+'</b></div><p>'+esc(resp.explain)+'</p></div><button style="margin-top:13px" class="btn primary" data-vx="advance">'+(phase===3?'💎 完成本词，继续下一词 →':'继续下一步 →')+'</button>';
+ }
+ html+='<div class="vx-note" style="margin-top:18px">'+(vxRun.kind==='review'?'复习成功后会继续安排间隔复习。':'四步全部答对，才计入本周50词目标；答错的词会安排再次复习。')+'</div></div>';
+ return html;
+};
+vxToday=function(){
+ const today=localDay();
+ if(!Array.isArray(vxData.alloc[today])){
+  const prior=Object.values(vxData.alloc).flat();
+  const pending=Array.from(new Set([...(vxData.pending||[]),...prior,...Object.entries(vxData.records).filter(([id,r])=>VX_BY_ID[id]&&!r.learned).map(([id])=>id)])).filter(id=>VX_BY_ID[id]&&!vxData.records[id]?.learned);
+  const used=new Set(prior.concat(pending));
+  const fresh=VX_WORDS.filter(w=>!used.has(w.id)&&!vxData.records[w.id]?.learned).map(w=>w.id);
+  const queue=[...pending,...fresh];
+  vxData.alloc[today]=queue.slice(0,V57_DAILY_NEW);
+  vxData.pending=pending.filter(id=>!vxData.alloc[today].includes(id));
+  vxSave();
+ }else if(vxData.alloc[today].length>V57_DAILY_NEW){
+  const overflow=vxData.alloc[today].slice(V57_DAILY_NEW);
+  vxData.pending=Array.from(new Set([...(vxData.pending||[]),...overflow]));
+  vxData.alloc[today]=vxData.alloc[today].slice(0,V57_DAILY_NEW);
+  vxSave();
+ }
+ return vxData.alloc[today].filter(id=>VX_BY_ID[id]);
+};
+vxTodayCount=function(){const day=v57WeekKeyNow();return vxToday().filter(id=>{const p=Number(vxData.records[id]?.passedAt||0);return p&&v57DateKey(p)===day}).length};
+vxFinishWord=function(id,correct){
+ const r=vxRec(id);r.seen++;r.learned=true;
+ if(correct){r.correct++;r.stage=Math.max(r.stage||0,1);r.next=Date.now()+VX_MS;if(!r.passedAt)r.passedAt=Date.now();}
+ else{r.mistakes++;r.stage=0;r.next=Date.now()+VX_MS;}
+ vxData.records[id]=r;vxData.history=[...new Set([...vxData.history,localDay()])].slice(-200);
+ if(correct){state.stars=(state.stars||0)+1;state.petXP[UNITS[0].id]=(state.petXP[UNITS[0].id]||0)+1;markDay();save();}
+ vxSave();
+};
+vxCorrectReview=function(id,correct){
+ const r=vxRec(id);r.seen++;r.learned=true;
+ if(correct){r.correct++;r.stage=Math.min(4,(r.stage||0)+1);r.next=Date.now()+([1,3,7,14][Math.min(r.stage-1,3)]||1)*VX_MS;if(!r.passedAt)r.passedAt=Date.now();}
+ else{r.mistakes++;r.stage=0;r.next=Date.now()+VX_MS;}
+ vxData.records[id]=r;vxData.reviewCount++;vxData.history=[...new Set([...vxData.history,localDay()])].slice(-200);vxSave();
+};
+vxStart=function(kind){
+ if(vxRun){vxPaused=false;view='mine';session=null;render();return;}
+ const ids=kind==='review'?vxDue().slice(0,V57_DAILY_REVIEW):vxToday().filter(id=>!vxData.records[id]?.learned);
+ if(!ids.length){alert(kind==='review'?'目前没有到期词汇。可以先完成今天的新词任务。':'今天安排的新词已学完；答错的词会在到期后进入复习。');return;}
+ vxRun={kind,ids,i:0,phase:0,selected:[],response:null,mistake:false,done:0,guideVersion:'v57'};
+ vxPaused=false;vxSave();view='mine';session=null;render();window.scrollTo({top:0,behavior:'instant'});
+};
+vxMinePage=function(){
+ if(vxRun&&!vxPaused)return vxStudyPage();
+ const today=vxToday(),done=vxTodayCount(),due=vxWordsDue(),master=vxMastered(),newLeft=today.filter(id=>!vxData.records[id]?.learned).length;
+ let out=v57WeeklySummary();
+ out+='<section class="vx-mine-header"><div><span class="vx-kicker">📚 小学基础 → 进阶 → 初中拓展</span><h2>⛏️ 单词矿洞 · 每周50词</h2><p>建议周一至周五每天学习10个新词，再复习最多5个旧词。周末用于补漏和巩固。先理解意思，再找词语伙伴、看句子里的工作，最后遮住单词回忆拼写。</p><div class="vx-daily-stat"><span>今日新词过关 '+done+'/'+today.length+'</span><span>到期复习 '+due+' 词</span><span>累计接触 '+vxLearned()+' 词</span><span>长期保持 '+master+' 词</span></div><div class="vx-inline"><button class="btn primary" data-vx="start" '+(newLeft?'':'disabled')+'>⛏️ '+(vxRun?'继续上次任务':newLeft?'开始今日10个新词':'今日新词已完成')+'</button><button class="btn gold" data-vx="review" '+(due?'':'disabled')+'>🔁 复习到期词（每次最多5个）</button></div></div><span class="vx-miner" aria-hidden="true">🦖</span></section>';
+ out+='<div class="section"><h2>💎 今天的10块新词矿石</h2><span class="sub">四步全部过关才点亮</span></div><div class="vx-oregrid">'+today.map((id,i)=>{const w=VX_BY_ID[id],rec=vxData.records[id]||{},passed=rec.passedAt&&v57DateKey(rec.passedAt)===v57WeekKeyNow()&&v57DateKey(rec.passedAt)===localDay();return '<div class="vx-ore '+(passed?'done':rec.learned?'':'active')+'"><span class="stone">'+(passed?'💎':rec.learned?'🔁':'🪨')+'</span><span class="label">'+(passed?esc(w.w):rec.learned?'待复习':'新词 '+(i+1))+'</span></div>'}).join('')+'</div>';
+ out+='<section class="vx-card"><h3>🧠 四步引导记忆法</h3><div class="v57-guide"><strong>1. 听音认义</strong><p>听发音、看中文、想一个生活画面。</p><strong>2. 找词语伙伴</strong><p>通过同主题、反义词、常见搭配或相似词形建立联系。</p><strong>3. 看句子里的工作</strong><p>先理解一个词是在起名字、表示动作、描述样子，还是表示位置和连接；暂时不要求背语法术语。</p><strong>4. 遮住单词再拼写</strong><p>先凭记忆找回单词，再放回例句中读一遍。</p></div><p class="vx-note">每个词完成四步且全部正确，或之后在复习中成功补过关，才计入本周50个不同单词。</p></section>';
+ const learned=VX_WORDS.filter(w=>vxData.records[w.id]?.learned).slice(-80).reverse();
+ out+='<section class="vx-card"><h3>📖 词汇收藏与联系地图</h3><p class="vx-note">这里显示已接触词汇的意思、它在句子里的工作，以及一个可联想的词语伙伴。</p><div class="vx-library-grid">'+(learned.map(w=>{const rel=v57Relation(w),role=v57Role(w);return '<div class="vx-library-cell"><b>'+esc(w.w)+'</b><small>'+esc(w.cn)+'</small><span class="v57-library-note">'+esc(role.label)+' · '+esc(rel.kind)+'：'+esc(rel.answer)+'</span><button class="btn soft" data-vx="speak" data-text="'+attr(w.w)+'">🔊</button></div>'}).join('')||'<div class="vx-note">完成第一个单词后，这里会出现你的词汇收藏。</div>')+'</div></section>';
+ out+='<div class="cheer" style="margin-top:15px">📅 推荐节奏：每周50个不同单词；每天10个新词 + 最多5个到期复习。周末重点复习错词和容易混淆的词。</div>';
+ return out;
+};
+const V57_PRE_ISLAND=islandPage;
+islandPage=function(){let html=V57_PRE_ISLAND();return v57WeeklySummary()+html.replaceAll('每日15词','每周50词').replaceAll('今日15词','本周50词')};
+const V57_PRE_GROWTH=growthPage;
+growthPage=function(){return v57WeeklySummary()+V57_PRE_GROWTH()};
+if(vxRun&&vxRun.guideVersion!=='v57'){
+ const currentId=vxRun.ids?.[vxRun.i],leftover=(vxRun.ids||[]).slice((vxRun.i||0)+1).filter(id=>VX_BY_ID[id]&&!vxData.records[id]?.learned);
+ vxData.pending=Array.from(new Set([...(vxData.pending||[]),...leftover]));
+ vxRun=currentId&&VX_BY_ID[currentId]?{kind:vxRun.kind,ids:[currentId],i:0,phase:0,selected:[],response:null,mistake:false,done:0,guideVersion:'v57'}:null;
+ vxSave();
+}
+vxData.pending=vxData.pending||[];
+const nav=document.getElementById('nav'),mineBtn=nav?.querySelector('[data-tab="mine"]');
+if(mineBtn)mineBtn.textContent='💎 每周50词';
+const logo=document.querySelector('.brand h1');if(logo)logo.innerHTML='英语岛大冒险 <span style="color:#398459">V5.7</span>';
+const sub=document.querySelector('.brand small');if(sub)sub.textContent='方块世界 · 引导式词汇记忆 · 每周50词 · 阅读闯关';
+const v56Caption=document.querySelector('.v56-caption strong');if(v56Caption)v56Caption.textContent='🧱 V5.7 引导式词汇版';
+const v56Sub=document.querySelector('.v56-caption div');if(v56Sub)v56Sub.textContent='本周目标50个不同单词；学习记录保存在当前浏览器。';
+const help=document.getElementById('v56-help');if(help)help.innerHTML='<strong>V5.7 词汇学习说明：</strong>每周目标是50个不同单词。建议周一至周五每天10个新词，每天最多复习5个旧词，周末补漏。单词通过听音认义、找词语伙伴、理解句中工作、遮住拼写四步学习。四步全部答对，或在后续复习中成功补过关，才计入周目标。当前词汇进度保存在本设备浏览器；换设备前请先备份。';
+document.title='英语岛大冒险 V5.7 · 引导式词汇记忆版';
+render();
+})();
+</script>
 </body></html>
